@@ -1,0 +1,103 @@
+/* Add this CSS to your existing stylesheet or create a new one */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+}
+
+nav {
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button a {
+    text-decoration: none;
+    color: white;
+}
+
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    padding:5px;
+}
+
+.product-item {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: calc(33.33% - 20px);
+    /* padding: 10px; */
+    text-align: left;
+    display: inline-block; 
+    margin-bottom: 20px;
+    /* margin-right: 20px;  */
+    transition: transform 0.3s;
+    text-align: center;
+}
+
+.product-item:hover {
+    transform: scale(1.05);
+}
+
+.product-item img {
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#more, #logout {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+#logout{
+    background-color: #45a049;
+}
+#logout:hover{
+    background-color: orangered;
+}
+#more:hover {
+    background-color: #2980b9;
+}
+.custom-popup-class {
+    /* Add your custom styles here */
+    background-color: #ffffff;
+    color: #333333;
+    border: 2px solid #4CAF50;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+@media screen and (max-width: 768px) {
+    .product-item {
+        width: 100%;
+        margin-right: 0;
+    }
+}

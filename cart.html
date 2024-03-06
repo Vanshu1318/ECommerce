@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="cart.css">
+</head>
+
+<body onload="loadItems()">
+    <div id="nav">
+        <button><a href="index.html">Back</a></button>
+        <button id="logout" onclick="logout()">Logout</button>
+    </div>
+    <main id="container"></main>
+    <div id="checkout">
+        <button onclick="checkout()">Checkout</button>
+        <div id="total">Total: Rs 0.00 </div>
+    </div>
+    
+
+    <script>
+        let list;
+        let totalAmount = 0;
+
+        function logout() {
+            localStorage.removeItem("session");
+            window.location.href = "http://127.0.0.1:5500/Todo/login.html";
+        }
+     let items = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : [];
+        function loadItems() {
+            list = document.getElementById("container");
+            list.innerHTML = '';
+           // let items = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : [];
+           // console.log(items);
+            let session = localStorage.getItem("session");
+            console.log(session);
+            let Items = items.filter((item) => item.id == session);
+            console.log(items);
+            ///////yha per m history m items daal skti hu direct push krungi hr baar differnetiate with ids
+            ///history obj that contains id of user and all items of their cart
+            // his=localStorage.getItem("history")?JSON.parse(localStorage.getItem("history")):[];
+            // his.push(Items); 
+            Items.forEach((item) => {
+                display(item);
+            });
+           //localStorage.setItem("cart", JSON.stringify(items));
+
+            // Calculate and display total price
+            calculateTotal();
+        }
+
+        function display(obj) {
+            let div = document.createElement("div");
+            div.setAttribute("id", "box");
+            let pic = document.createElement("img");
+            pic.setAttribute("src", obj.pic);
+
+            let pricediv = document.createElement("div");
+            pricediv.innerText = `Rs ${obj.price}`;
+            let minus = document.createElement("div");
+            minus.innerText = "-";
+            let quantity = document.createElement("div");
+            quantity.innerText = obj.Quantity;
+            let plus = document.createElement("div");
+            plus.innerText = "+";
+
+            let netPricediv = document.createElement("div");
+            netPricediv.innerText = obj.price * obj.Quantity;
+            minus.style.display = "inline-block";
+            quantity.style.display = "inline-block";
+            plus.style.display = "inline-block";
+            netPricediv.style.display = "inline-block";
+
+            list.appendChild(div);
+            div.append(pic, pricediv, minus, quantity, plus, netPricediv);
+
+            
+                minus.addEventListener("click", () => {
+                    if(obj.Quantity>1){
+
+                    
+                    obj.Quantity = obj.Quantity - 1;
+                    quantity.innerText = obj.Quantity;
+                    netPricediv.innerText = obj.price * obj.Quantity;
+                    updateCartItem(obj);
+                    calculateTotal();
+                    }
+                });
+            
+
+            plus.addEventListener("click", () => {
+                
+                
+                obj.Quantity = obj.Quantity + 1;
+                quantity.innerText = obj.Quantity;
+                netPricediv.innerText =obj.price * obj.Quantity;
+                updateCartItem(obj);
+                calculateTotal();
+            });
+           // localStorage.setItem("cart",JSON.stringify(items));
+            return obj;
+        }
+        function updateCartItem(updatedItem) {
+    // Find the index of the item in the items array
+    const index = items.findIndex((item) => item.productId === updatedItem.productId);
+
+    // Update the item in the array
+    if (index !== -1) {
+        items[index] = updatedItem;
+        
+        // Update local storage
+        localStorage.setItem("cart", JSON.stringify(items));
+    }
+}
+
+
+        function calculateTotal() {
+            totalAmount = 0;
+            let netPrices = document.querySelectorAll("#box div:nth-child(6)");
+
+            netPrices.forEach((price) => {
+                totalAmount += parseFloat(price.innerText);
+            });
+
+            // Display the total amount
+            document.getElementById("total").innerText = `Total: Rs ${totalAmount.toFixed(2)}`;
+        }
+
+        function checkout() {
+            // You can add your logic here for processing the checkout, e.g., sending data to a server
+            if(!localStorage.getItem("session"))
+            window.location.href="login.html";
+        else{
+            alert(`Checkout successful! Total amount: Rs ${totalAmount.toFixed(2)}`);
+            /////////Store cart of each users in their history......................................
+            //////i want after checkout each users item will store on history differenciate with their id
+            /////bcz in this code in my cart all products will show that i dont want to checkout again 
+            //////one more problem occurs on my minus button condition will not work their...
+            let Items = items.filter((item) => item.id == localStorage.getItem("session"));
+            console.log(Items);
+            his=localStorage.getItem("history")?JSON.parse(localStorage.getItem("history")):[];
+            Items.forEach((item) => {
+                his.push(item); 
+            });
+            // his=localStorage.getItem("history")?JSON.parse(localStorage.getItem("history")):[];
+            // his.push(Items); 
+            localStorage.setItem("history",JSON.stringify(his));
+           localStorage.removeItem("cart");
+            window.location.href="index.html";
+        }
+    }
+        //////////next step for tommorow...........
+        /////1.admin role authentication with the help of admin key in localstorage like session and check
+        /////////2.ab ye jab checkout ho jayenge to cart k saare obj history vaali local storage m daalne h 
+        ////3.and phir ek profile vala page bna k usme show kervana h 
+        ////4.cart ko clear krna h
+        ///5.maintain this site for multiple users at a time......
+        //////......
+    </script>
+</body>
+
+</html>

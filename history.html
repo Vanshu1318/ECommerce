@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        #container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #fff;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        div {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body onload="loadItems()">
+    <div id = "container">
+    </div>
+    <script>
+        ////show all items //////price photo total price netPrice
+        var list;
+        function loadItems(){
+        list=document.getElementById("container");
+         let items=localStorage.getItem("history")?JSON.parse(localStorage.getItem("history")):[];
+         items = items.filter((item) => item.id == localStorage.getItem("session"));
+            console.log(items);
+             
+            items.forEach((item) => {
+                display(item);
+            });
+        }
+        function display(obj) {
+            let div = document.createElement("div");
+            div.setAttribute("id", "box");
+            let pic = document.createElement("img");
+            pic.setAttribute("src", obj.pic);
+            let pricediv = document.createElement("div");
+            pricediv.innerText = `Rs ${obj.price}`;
+            // let quantity = document.createElement("div");
+            // quantity.innerText = obj.Quantity;
+            // let netPricediv = document.createElement("div");
+            // netPricediv.innerText = obj.price * obj.Quantity;
+            list.appendChild(div);
+            div.append(pic, pricediv);
+            return obj;
+        }
+        
+    </script>
+</body>
+</html>

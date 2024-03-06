@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="Description" content="this the list of products">
+
+    <title>TodoApp</title>
+    <link rel="stylesheet" href="style.css"/>
+    <style>
+        .d{
+         color:black;
+
+        } 
+    </style>
+</head>
+<body>
+    <h1>Add Products</h1>
+    <div style="text-align: center; " id="fill">
+    <Label for="product">Product name</Label>
+    <input type="text" id="product" autofocus required/>
+    <Label for="desc">Description</Label>
+    <input type="text" id="desc" required/>
+    <Label for="price">Price</Label>
+    <input type="text" id="price" required/>
+    <Label for="price">Picture Link</Label>
+    <input type="text" id="pic" required/>
+    <input type="submit" value="Submit" id="btn"/>
+    </div>
+    <h2>List :</h2>
+    <div id="container">
+     <div style="color: brown;" class="d dives">Products</div> 
+     <div style="color: brown;" class="dives d">Price</div> 
+     <div style="color: brown;" class="dives d">Description</div>
+       
+    </div>
+    <script src="script.js"></script>
+    </body>
+    </html>

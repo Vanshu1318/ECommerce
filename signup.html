@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp</title>
+    <link rel="stylesheet" href="signup.css">
+</head>
+
+<body>
+    <form action="/post" method="post">
+        <h1 style="text-align: center;">SignUp</h1>
+        <div style="text-align: center;">
+            <label for="Uname"> Name</label>
+            <input type="text" placeholder="FullName" id="Uname" required />
+            <label for="pass">Password</label>
+            <input type="password" placeholder="Password" id="pass" required />
+            <br><br>
+            <label for="Cpass"> Confirm Password</label>
+            <input type="password" placeholder="Password" id="Cpass" required />
+            <label for="email">Email</label>
+            <input type="text" placeholder="Email" id="email" required />
+
+        </div>
+        
+            <div><input type="button" value="submit"
+                    id="btn" /></div>
+        
+    </form>
+    <script>
+        var Unme = document.getElementById("Uname");
+        var pass = document.getElementById("pass");
+        var mail = document.getElementById("email");
+        var Uid = document.getElementById("id");
+        var btn = document.getElementById("btn");
+        let arr = [];
+        function createObject(id, name, password, email) {
+            const obj = {
+                id: id,
+                name: name,
+                password: password,
+                email:email
+            };
+            return obj;
+        }
+        function generateUniqueId() {
+            return '_' + Math.random().toString(36).substr(2, 9);
+        }
+        btn.addEventListener("click", () => {
+            if (Unme.value == "" && pass.value == "") {
+                alert("fill the required fields");
+            }
+            else {
+
+
+                // let logIn = localStorage.getItem('users');
+                // logIn = logIn ? JSON.parse(logIn) : [];
+                // const Uname = logIn.findIndex(logged => logged.name === Unme.value);
+                // const Upass = logIn.findIndex(logged => logged.password === pass.value);
+
+                let users=localStorage.getItem("users")?JSON.parse(localStorage.getItem("users")):[];
+              let user=  users.filter((item)=>{
+                    if(item.email==mail.value && item.password==pass.value)
+                    return true;
+                });
+                if(user.length!=0)
+                {
+                    alert("User already exists");
+
+
+                }
+                //yha per mujhe jan na h ki id kha se fetch kru jo match ker rhe h uski......
+                // if (Uname != -1 && Upass != -1) {
+                //     alert("Account already exist");
+                //     isLogged.islogged = true;
+                //     window.location.href = "http://127.0.0.1:5500/Todo/home.html";
+                //     //window.location.href="http://127.0.0.1:5500/Todo/index.html";
+                // }
+                else {
+
+                    const i = generateUniqueId();
+                    const obj = createObject(i, Unme.value, pass.value,mail.value);
+                    users.push(obj);
+
+                    localStorage.setItem("users", JSON.stringify(users));
+                    
+
+                    window.location.href="index.html";
+                    // window.location.href="http://127.0.0.1:5500/Todo/index.html";
+                }
+            }
+
+        })
+
+    </script>
+</body>
+
+</html>

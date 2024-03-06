@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login page</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <h1>Login</h1>
+    <form>
+        <label for="email">Email</label>
+        <input type="text" id="email" required/>
+        <label for="pass">Password</label>
+        <input type="password" id="pass" required/>
+        <input type="button" id="btn" value="submit"/>
+
+    </form>
+    <button><a href="signup.html">signUp</a></button>
+    <script>
+        var mail=document.getElementById("email");
+        var pass=document.getElementById("pass");
+        var btn=document.getElementById("btn");
+       
+        btn.addEventListener("click",()=>{
+          
+            let users=localStorage.getItem("users")?JSON.parse(localStorage.getItem("users")):[];
+              let user=  users.filter((item)=>{
+                    if(item.email==mail.value && item.password==pass.value)
+                    return true;
+                });
+               // console.log(user);
+if(user.length==0)
+{
+    alert("No such account")
+}
+            /////yha mujhe vo id chahiye ya vo index chahiye jis se m isLogged k islogged ko true ker sku
+            // if(Uname!=-1 && Upass!=-1){
+            //     isLogged.islogged=true;
+            //     logIn.islog=true;
+            //     localStorage.setItem("isLogged",JSON.stringify(isLogged));
+            //     localStorage.setItem("logged",JSON.stringify(logIn));
+            //     window.location.href="http://127.0.0.1:5500/Todo/home.html";
+            //    // window.location.href="http://127.0.0.1:5500/Todo/index.html";
+            // }
+            else{
+                //alert("wrong username & password");
+               
+                    localStorage.setItem("session",mail.value);
+                
+                
+                window.location.href="http://127.0.0.1:5500/Todo/index.html";
+            }
+        })
+        //////mere site pe agar koi bhi it means user 1 first add their data and after this
+        //// i want user 2 can do their work but this all happens on 1 user cart 
+        ///till i logout or login again but i want perticular break at a perticular point......
+    </script>
+</body>
+</html>

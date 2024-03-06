@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Vanshu Home Page</title>
+    <link rel="stylesheet" href="home.css">
+    <!-- <style>
+        /* Add your CSS styling for the popup here */
+        #customPopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style> -->
+</head>
+
+<body onload="f()">
+    <h1>
+        Products
+
+    </h1>
+    <nav>
+    <!-- <button id="signup"><a href="signup.html">SignUp</a></button>
+    <button id="login"><a href="login.html">login</a></button>
+    <button id="logout" onclick="logout()">Logout</button>
+    <button id="page" >Add Products</button> -->
+</nav>
+    <div id="container" class="product-container">
+        <!-- <div id="customPopup">
+            <p>This is a custom popup!</p>
+            <button onclick="closeCustomPopup()">Close</button>
+        </div> -->
+    </div>
+    
+        <button id="more">Load more</button>
+    </div>
+    <!-- <a id="logout">logout </a> -->
+    
+    <script>
+        let flag=0;
+        let nav=document.querySelector("nav");
+        
+       function f(){
+         let a = localStorage.getItem("admin");
+        
+        let s = localStorage.getItem("session");
+        console.log(a);
+        console.log(s);
+        function logout() {
+            localStorage.removeItem("session");
+            ////also delete user from user local storage.......
+            window.location.href = "http://127.0.0.1:5500/Todo/login.html";
+        }
+        if(a === s){
+            console.log("hi");
+            var page=document.createElement("button");
+            page.innerText="add Products";
+            page.id="page";
+            let log=document.createElement("button");
+            log.id="logout";
+            log.innerText="logout";
+            page.addEventListener("click",()=>{
+                window.location.href="product.html";
+            })
+            log.addEventListener("click",logout);
+            if (nav) {
+        nav.append(page, log);
+    } else {
+        console.error("Error: 'nav' element not found.");
+    }
+              
+    }
+           
+        else if(localStorage.getItem("session")!=null){
+            let log=document.createElement("button");
+            log.id="logout";
+            log.innerText="logout";
+            let history=document.createElement("button");
+            history.innerText="History";
+            let mycart=document.createElement("button");
+          mycart.innerText="Cart";
+          nav.append(history,mycart,log);
+          log.addEventListener("click",logout);
+          mycart.addEventListener("click",()=>{
+            window.location.href="cart.html";
+          })
+          history.addEventListener("click",()=>{
+            window.location.href="history.html";
+          })
+
+        }
+        if(localStorage.getItem("session")==null){
+            let login=document.createElement("button");
+            login.id="login";
+            login.innerText="login";
+            
+         
+          let signup=document.createElement("button");
+          signup.innerText="signup";
+          signup.id="signup";
+          nav.append(login,signup);
+          login.addEventListener("click",()=>{
+            window.location.href="login.html";
+          });
+          signup.addEventListener("click",()=>{
+            window.location.href="signup.html";
+          })
+        }
+        
+        }
+        let cart = [];
+        let arr = [];
+        var container = document.getElementById("container");
+        var page = document.getElementById("page");
+        var logout = document.getElementById("logout");
+        var more = document.getElementById("more");
+        let count = 0;
+        let existingProducts = localStorage.getItem('products');
+        existingProducts = JSON.parse(existingProducts);
+        load(existingProducts);
+
+        //     const obj={
+
+        //        islogged:false
+        //     };
+        //     arr=localStorage.getItem("isLogged");
+
+        //     if(arr){
+        //      arr=JSON.parse(arr);
+
+        //     }
+        //     else{
+        //        arr=[];
+        //        arr.push(obj);
+        //     }
+
+
+        //    localStorage.setItem("isLogged",JSON.stringify(arr));
+
+
+
+        var more;
+        function load(existingProducts) {
+            if (count >= existingProducts.length - 1) {
+                more.style.visibility = "hidden";
+            }
+            let temp = 0;
+            while (temp < 3 &&count<existingProducts.length) {
+                
+                
+
+                    let mainDiv = document.createElement("span");
+                    mainDiv.setAttribute("id", count);
+                    mainDiv.setAttribute("class", "product-item");
+
+                    let pic=document.createElement("img");
+                    pic.setAttribute("src",existingProducts[count].pic);
+                    var pro = document.createElement("div");
+                    pro.innerText = existingProducts[count].product;
+                    var price = document.createElement("div");
+                    price.innerText = `Rs ${existingProducts[count].price}`;
+                    var cart = document.createElement("button");
+                    cart.innerText = "add to cart";
+                   
+                    mainDiv.append(pic,pro, price, cart);
+                   
+                   
+                   // brk.style.visibility="none";
+                 
+                  //mainDiv.append(brk);
+                 
+                    
+
+                    /////////cart.................................................................................
+                    cart.addEventListener("click", (e) => {
+                        
+                        let session = localStorage.getItem("session");
+                        let admin=localStorage.getItem("admin");
+                        if(session===admin){
+                            console.log("cart is not working");
+
+                        }
+                        else if (session===null||typeof session===undefined) {
+                            //yha condition lgani h ki cart pe aate hi check kere login nhi h to cart login pe bheje
+                            console.log("hi");
+                            window.location.href = "login.html";
+                        }
+                        else{
+                        console.log(session);
+                        
+                        console.log("ji");
+
+                        let index = e.target.parentNode.getAttribute("id");
+
+                        console.log(index);
+                        const cartobj = {
+                            id: session,
+                            pic:existingProducts[index].pic,
+                            productId: existingProducts[index].id,
+                            product: existingProducts[index].product,
+                            price: existingProducts[index].price,
+                            Quantity: 1
+
+                        };
+                        //  let flag=0;
+                        cart = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : [];
+                        // console.log(typeof(cart));
+                        if (cart.length == 0) {
+                            cart.push(cartobj);
+                        }
+                        else if (cart.length != 0) {
+                            let cartItem = cart.map((item) => {
+                                if (item.productId == existingProducts[index].id&&item.id==localStorage.getItem("session")) {
+                                    item.Quantity = item.Quantity + 1;
+                                    flag=1;
+                                    return true;
+                                }
+                               
+                                //return true;
+                            });
+                            if(flag!==1){
+                                cart.push(cartobj);
+                            }
+                        }
+
+
+                        localStorage.setItem("cart", JSON.stringify(cart));
+                        // document.getElementById("customPopup").style.display = "block";
+                        // function closeCustomPopup() {
+                        // document.getElementById("customPopup").style.display = "none";
+                        //      }
+                    //alert("added to cart");
+                    window.location.href = "http://127.0.0.1:5500/Todo/cart.html";
+                        }
+                    })
+                
+                count++;
+                temp++;
+                // if(temp===2){
+                //     mainDiv.style.display="inline-block";
+                // }
+                // else{
+                //     mainDiv.style.display="block";
+                // }
+               container.appendChild(mainDiv);
+            }
+           
+        }
+           
+            
+
+
+
+        
+        more.addEventListener("click", () => {
+            // container.remove(more);
+            //console.log(existingProducts);
+            // more.style.visibility=" hidden";
+            load(existingProducts);
+        })
+        // page.addEventListener("click", () => {
+        //     window.location.href = "http://127.0.0.1:5500/Todo/login.html";
+        // })
+        //////////logout............................................................................................
+        // logout.addEventListener("click",()=>{
+        //     let logout=localStorage.getItem('logged');
+        //     logout = logout ? JSON.parse(logout) : [];
+        //     const Uname = logIn.findIndex(logged=> logged.name=== name.value);
+        //     const Upass = login.findIndex(logged => logged.pass === pass.value);
+        //     if(Uname!=-1 && Upass!=-1){
+        //         window.location.href="product.html";
+        //     }
+        //     else{
+        //         window.location.href="home page";
+        //     }
+        // })
+        
+        // page.addEventListener("click",()=>{
+            
+        //     if(JSON.parse(localStorage.getItem("admin"))!=JSON.parse(localStorage.getItem("session"))){
+        //         window.location.href="product.html";
+        //     }
+        // })
+       
+
+/////////////////////////image..........................................................................
+
+//         var imagePath = 'path/to/your/image.jpg'; // Replace with the actual path to your image
+// var image = new Image();
+
+// // Set the image source to load the image
+// image.src = imagePath;
+
+// // Wait for the image to load
+// image.onload = function() {
+//     var canvas = document.createElement('canvas');
+//     var ctx = canvas.getContext('2d');
+//     canvas.width = image.width;
+//     canvas.height = image.height;
+    
+//     // Draw the image onto the canvas
+//     ctx.drawImage(image, 0, 0, image.width, image.height);
+
+//     // Convert canvas content to data URL (JPEG format in this example)
+//     var dataUrl = canvas.toDataURL('image/jpeg');
+
+//     // Display the image
+//     var imgElement = document.createElement('img');
+//     imgElement.src = dataUrl;
+//     document.body.appendChild(imgElement); // Append to the body or another container
+
+//     // Store the data URL in LocalStorage
+//     localStorage.setItem('imageData', dataUrl);
+// };
+
+    </script>
+
+</body>
+
+</html>
